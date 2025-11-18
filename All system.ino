@@ -64,10 +64,8 @@ int daynightcheck(){
 
 void ExteriorLight(int a){
   if(a == 0){
-    
     digitalWrite(LED2,HIGH);
   }else{
-    
     digitalWrite(LED2,LOW);
   }
 }
@@ -76,12 +74,8 @@ void ProximityLight(int a){
   if(a == 0){
     if(analogRead(Ultra) <= 500){
       digitalWrite(LED1,HIGH);
-      
-      
     }else{
       digitalWrite(LED1,LOW);
-      
-      
     }
   }
 }
