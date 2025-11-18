@@ -17,7 +17,7 @@ const int LED2 = 23;
 int BedroomN = 1;
 
 void setup() {
-  init(0x48);
+  
   pixels.begin();
   pixels.setBrightness(50);
   pinMode(BedroomButton, INPUT_PULLUP);
@@ -55,7 +55,7 @@ void Bedroom(int a) {
 }
 
 int daynightcheck(){
-  if(analogRead(LDR) <= 1000){
+  if(analogRead(LDR) >= 1000){
     return 0;
   }else{
     return 1;
@@ -64,20 +64,24 @@ int daynightcheck(){
 
 void ExteriorLight(int a){
   if(a == 0){
-    digitalWrite(LED1,HIGH);
+    
     digitalWrite(LED2,HIGH);
   }else{
-    digitalWrite(LED1,LOW);
+    
     digitalWrite(LED2,LOW);
   }
 }
 
 void ProximityLight(int a){
   if(a == 0){
-    if(analogRead(Ultra) <= 1000){
-      digitalWrite(LED2,HIGH);
+    if(analogRead(Ultra) <= 500){
+      digitalWrite(LED1,HIGH);
+      
+      
     }else{
-      digitalWrite(LED2,LOW);
+      digitalWrite(LED1,LOW);
+      
+      
     }
   }
 }
