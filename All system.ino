@@ -1,7 +1,6 @@
 #include <IROVER.h>
 #include <Adafruit_NeoPixel.h>
 
-
 const int PixelRing = 12;
 const int PixelPin = 19;
 
@@ -13,10 +12,15 @@ const int LDR = 33;
 const int Ultra = 32;
 
 const int GateButton = i0;
-const int IR = i1;
+const int IR1 = i1;
+const int MaindoorButton = i2;
+const int IR2 = i3;
+const int GarageButton = i4;
 
 const int LED1 = 5;
 const int LED2 = 23;
+
+const int Buzzer = 25;
 
 int BedroomN = 1;
 int Gate = 0;
@@ -27,6 +31,9 @@ void setup() {
   pixels.setBrightness(50);
   pinMode(BedroomButton, INPUT_PULLUP);
   pinMode(GateButton, INPUT_PULLUP);
+  pinMode(MaindoorButton, INPUT_PULLUP);
+  pinMode(GarageButton, INPUT_PULLUP);
+  pinMode(Buzzer,OUTPUT);
   pinMode(LED1,OUTPUT);
   pinMode(LED2,OUTPUT);
 }
@@ -60,16 +67,16 @@ void Bedroom(int a) {
   pixels.show();
 }
 
-int daynightcheck(){
-  if(analogRead(LDR) >= 1000){
-    return 0;
+bool daynightcheck(){
+  if(analogRead(LDR) <= 1000){
+    return true;
   }else{
-    return 1;
+    return false;
   }
 }
 
 void ExteriorLight(int a){
-  if(a == 0){
+  if(a){
     digitalWrite(LED2,HIGH);
   }else{
     digitalWrite(LED2,LOW);
@@ -77,7 +84,7 @@ void ExteriorLight(int a){
 }
 
 void ProximityLight(int a){
-  if(a == 0){
+  if(a){
     if(analogRead(Ultra) <= 500){
       digitalWrite(LED1,HIGH);
     }else{
@@ -86,8 +93,8 @@ void ProximityLight(int a){
   }
 }
 
-/*void Garage(){
-  if(digitalRead() == 0){
+void Garage(){
+  if(digitalRead(GarageButton) == 0){
     if(!(GarageState)){
       GarageState = true;
       digitalWrite( ,HIGH);
@@ -112,10 +119,10 @@ void ProximityLight(int a){
       motor(1,0);
     }
   }
-}*/
+}
 
 void GateControl(){
-  if(digitalRead(GateButton) == 0 || analogRead(IR) >= 1500){
+  if(digitalRead(GateButton) == 0 || analogRead(IR1) >= 1500){
     if(Gate == 0){
       servo(10,0);
       Gate = 1;
@@ -127,10 +134,19 @@ void GateControl(){
   }
 }
 
+void MaindoorControl(){
+  if(digitalRead(MaindoorButton) == 0 || analogRead(IR2) >= 1500){
+
+  }else{
+    
+  }
+}
+
 void loop() {
   ExteriorLight(daynightcheck());
   ProximityLight(daynightcheck());
   Bedroom(BedroomControl());
-  //Garage()
+  Garage()
   GateControl();
+  MaindoorControl()
 }
