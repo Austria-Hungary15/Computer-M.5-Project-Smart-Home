@@ -98,26 +98,21 @@ void Garage(){
     if(!(GarageState)){
       GarageState = true;
       digitalWrite( ,HIGH);
-      for(int i = 1;i<= ;i++){
-        tone(Buzzer,);
-        motor(1,30);
+        tone(Buzzer,20);
+        servo(11,90);
         delay(100);
         noTone(Buzzer);
         delay(100);
-      }
-      motor(1,0);
     }else{
       GarageState = false;
       digitalWrite( ,LOW);
-      for(int i = 1;i<= ;i++){
-        tone(Buzzer,);
-        motor(1,-30);
+        tone(Buzzer,20);
+        servo(11,0);
         delay(100);
         noTone(Buzzer);
         delay(100);
-      }
-      motor(1,0);
     }
+    delay(100);
   }
 }
 
@@ -136,10 +131,15 @@ void GateControl(){
 
 void MaindoorControl(){
   if(digitalRead(MaindoorButton) == 0 || analogRead(IR2) >= 1500){
-
+    servo(12,45);
+    tone(Buzzer,40);
+    delay(100);
+    noTone(Buzzer);
+    delay(1700);
   }else{
-    
+    servo(12,0);
   }
+  delay(200);
 }
 
 void loop() {
