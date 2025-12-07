@@ -148,7 +148,7 @@ void SmartGarden(){
   if(analogRead(SoilMoister) && analogread(TempSensor)){
 
   }else{
-    
+
   }
 }
 
@@ -159,4 +159,5 @@ void loop() {
   Garage()
   GateControl();
   MaindoorControl()
+  SmartGarden()
 }
