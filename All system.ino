@@ -16,6 +16,8 @@ const int IR1 = i1;
 const int MaindoorButton = i2;
 const int IR2 = i3;
 const int GarageButton = i4;
+const int SoilMoister = i5;
+const int TempSensor = i6;
 
 const int LED1 = 5;
 const int LED2 = 23;
@@ -140,6 +142,14 @@ void MaindoorControl(){
     servo(12,0);
   }
   delay(200);
+}
+
+void SmartGarden(){
+  if(analogRead(SoilMoister) && analogread(TempSensor)){
+
+  }else{
+    
+  }
 }
 
 void loop() {
