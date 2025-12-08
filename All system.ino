@@ -23,7 +23,7 @@ const int TempSensor = i6;
 
 const int LED1 = 5;
 const int LED2 = 23;
-//const int 
+const int GarageLED = 19;
 
 const int Buzzer = 25;
 
@@ -75,7 +75,7 @@ void Bedroom(int a) {
   pixels.show();
 }
 
-/*bool daynightcheck(){
+bool daynightcheck(){
   if(analogRead(LDR) <= 1000){
     return true;
   }else{
@@ -99,13 +99,13 @@ void ProximityLight(int a){
       digitalWrite(LED1,LOW);
     }
   }
-}*/
+}
 
 void Garage(){
   if(digitalRead(GarageButton) == 0){
     if(!(GarageState)){
       GarageState = true;
-      //digitalWrite( ,HIGH);
+      digitalWrite(GarageLED ,HIGH);
         tone(Buzzer,200);
         servo(11,720);
         delay(100);
@@ -113,7 +113,7 @@ void Garage(){
         delay(100);
     }else{
       GarageState = false;
-      //digitalWrite( ,LOW);
+      digitalWrite(GarageLED ,LOW);
         tone(Buzzer,20);
         servo(11,0);
         delay(100);
@@ -162,8 +162,8 @@ void SmartGarden(){
 }
 
 void loop() {
-  /*ExteriorLight(daynightcheck());
-  ProximityLight(daynightcheck());*/
+  ExteriorLight(daynightcheck());
+  ProximityLight(daynightcheck());
   Bedroom(BedroomControl());
   Garage();
   GateControl();
