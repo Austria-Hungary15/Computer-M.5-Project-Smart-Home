@@ -25,6 +25,7 @@ const int LED1 = 5;
 const int LED2 = 23;
 const int GarageLED = 19;
 
+const int Buzzer1 = 26;
 const int Buzzer = 25;
 
 int BedroomN = 1;
@@ -33,7 +34,7 @@ bool GarageState = false;
 void setup() {
   Serial.begin(9600);
   oled.clearDisplay();
-  oled.textSize(2);
+  oled.textSize(1);
   init(0x48);
   pixels.begin();
   pixels.setBrightness(50);
@@ -41,12 +42,14 @@ void setup() {
   pinMode(MaindoorButton, INPUT_PULLUP);
   pinMode(GarageButton, INPUT_PULLUP);
   pinMode(Buzzer,OUTPUT);
+  pinMode(Buzzer1,OUTPUT);
   pinMode(LED1,OUTPUT);
   pinMode(LED2,OUTPUT);
+  pinMode(GarageLED,OUTPUT);
 }
 
 int BedroomControl() {
-  Serial.println(analogRead(SoundSensor));
+  //Serial.println(analogRead(SoundSensor));
   if (digitalRead(BedroomButton) == 0 || analogRead(SoundSensor) >= 2500) {
     delay(500);
     BedroomN++;
@@ -76,7 +79,7 @@ void Bedroom(int a) {
 }
 
 bool daynightcheck(){
-  if(analogRead(LDR) <= 1000){
+  if(analog(LDR) <= 20){
     return true;
   }else{
     return false;
@@ -93,7 +96,7 @@ void ExteriorLight(int a){
 
 void ProximityLight(int a){
   if(a){
-    if(analogRead(Ultra) <= 500){
+    if(analog(Ultra) <= 500){
       digitalWrite(LED1,HIGH);
     }else{
       digitalWrite(LED1,LOW);
@@ -106,42 +109,44 @@ void Garage(){
     if(!(GarageState)){
       GarageState = true;
       digitalWrite(GarageLED ,HIGH);
-        tone(Buzzer,200);
-        servo(11,720);
+        tone(Buzzer1,200);
+        servo(11,90);
         delay(100);
         noTone(Buzzer);
         delay(100);
     }else{
       GarageState = false;
       digitalWrite(GarageLED ,LOW);
-        tone(Buzzer,20);
-        servo(11,0);
+        tone(Buzzer1,20);
+        servo(11,15);
         delay(100);
         noTone(Buzzer);
         delay(100);
     }
     delay(200);
+    noTone(Buzzer1);
   }
 }
 
 void GateControl(){
   int IR1Value = analog(IR1);
+  Serial.println(IR1Value);
   if(IR1Value >= 500){
     
-      servo(10,180);
+      servo(13,180);
       
       delay(1800);
   }else{
-      servo(10,90);
-    }
-    delay(200);
+      servo(13,90);
+  }
+  //delay(200);
   
 }
 
 void MaindoorControl(){
   //Serial.println(digitalRead(MaindoorButton));
   if(digitalRead(MaindoorButton) == 0){
-    servo(12,75);
+    servo(12,65);
     tone(Buzzer,500);
     delay(100);
     noTone(Buzzer);
@@ -154,11 +159,12 @@ void MaindoorControl(){
 
 void SmartGarden(){
   int rawMoist = analog(SoilMoister);
-  int percentMoist = (rawMoist * 100) / 4095;
+  float percentMoist = (rawMoist * 100) / 4095;
   int rawTemp = analog(TempSensor);
-  int percentTemp = (rawTemp * 100) / 4095;
-  oled.text(0,0,"Soil Moister Percent : %d",percentMoist);
-  oled.text(1,0,"Temperature Percent : %d",percentTemp);
+  float percentTemp = (rawTemp * 100) / 4095;
+  oled.text(0,0,"Soil Moister % : %d",rawMoist);
+  oled.text(1,0,"Temperature % : %d",rawTemp);
+  oled.show();
 }
 
 void loop() {
