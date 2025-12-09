@@ -133,11 +133,11 @@ void GateControl(){
   Serial.println(IR1Value);
   if(IR1Value >= 500){
     
-      servo(13,180);
+      servo(13,70);
       
       delay(1800);
   }else{
-      servo(13,90);
+      servo(13,0);
   }
   //delay(200);
   
@@ -162,8 +162,8 @@ void SmartGarden(){
   float percentMoist = (rawMoist * 100) / 4095;
   int rawTemp = analog(TempSensor);
   float percentTemp = (rawTemp * 100) / 4095;
-  oled.text(0,0,"Soil Moister % : %d",rawMoist);
-  oled.text(1,0,"Temperature % : %d",rawTemp);
+  oled.text(0,0,"Soil Moister : %d",rawMoist);
+  oled.text(1,0,"Temperature : %d",rawTemp);
   oled.show();
 }
 
